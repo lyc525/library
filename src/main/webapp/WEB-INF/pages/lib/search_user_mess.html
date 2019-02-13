@@ -1,0 +1,105 @@
+<div class="searchback"></div>
+<div class="searchpst1">
+</div>
+	<!-- <input class="searchinput" type="text" name="sou" size="18" /> -->
+	<button  class="searchusermess" type="submit">个人信息</button>
+	<br />
+	<div class="searchback3">
+		<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+
+			<!-- /.box-header -->
+			<div class="box-body table-responsive no-padding">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th style='width:4%'>Id</th>
+							<th style='width:8%'>会员编号</th>
+							<th style='width:8%'>会员姓名</th>
+							<th style='width:4%'>性别</th>
+							<th style='width:10%'>电话</th>
+							<th style='width:8%'>Vip等级</th>
+							<th style='width:10%'>爱好</th>
+							<th style='width:7%'>状态</th>
+							<th style='width:8%'>总借阅数</th>
+							<th style='width:8%'>超期数量</th>
+							<th style='width:8%'>可借数量</th>
+							<th style='width:8%'>操作</th>
+						</tr>
+					</thead>
+					<tbody id="tbodyId">
+							<tr><td colspan="12">正在查询数据,请稍后...</td></tr>
+					</tbody>
+				</table>
+			</div>
+			<div id="pageId" class="box-footer clearfix">
+			</div>
+
+			<!-- /.box-body -->
+		</div>
+		<!-- /.box -->
+	</div>
+</div>
+	</div>
+	<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+  $(function(){
+	 var username = $("#mainContentId").prop("username");	
+  	 //console.log("username=",username);
+  	 var url = "user/doSearchUser.do";
+	 var params = {"username":username.name};
+	 //console.log("params",params);
+	 $.post(url,params,function(result){
+	 if(result.state == 1){
+	   //console.log("result",result);
+	    doCreatedTr(result.data);
+	   }else{
+	    	alert(result.message);
+	    }
+	});
+	 $("#tbodyId").on("click",".btn-update",doUpdateUserMess);
+	 $("#bookSearch").on("click",dofindSearch);
+  });
+  
+  function dofindSearch(){
+      $("#mainContentId").load("index/doSearchList.do");
+  }
+  
+  function doUpdateUserMess(){
+	  $("#mainContentId").load("index/doUpdateUserMess.do");
+  }
+  
+  function doCreatedTr(data){
+	 //console.log("data",data);
+	  var tBody = $("#tbodyId");
+	  tBody.empty();
+	  var tr=$("<tr></tr>");
+	  var tds=doCreateTds(data);
+	  tr.append(tds);
+	  tBody.append(tr);
+  }
+  
+  function doCreateTds(row){
+	  //console.log("row",row);
+	  var tds="<td>"+row.id+"</td>"+
+	     "<td>"+row.userNum+"</td>"+
+	     "<td>"+row.username+"</td>"+
+	     "<td>"+row.gender+"</td>"+
+	     "<td>"+row.phone+"</td>"+
+	     "<td>"+(row.vip?"是":"否")+"</td>"+
+	     "<td>"+row.hobby+"</td>"+
+	     "<td>"+(row.valid?"启用":"禁用")+"</td>"+
+	     "<td>"+row.bookNum+"</td>"+
+	     "<td>"+row.overNum+"</td>"+
+	     "<td>"+row.borNum+"</td>"+
+	     "<td><button type='button' class='btn btn-default btn-update'>修改</button></td>"; 
+    return tds;
+  }
+  
+  
+</script>
+
+
+
+

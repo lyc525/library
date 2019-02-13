@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.lycwood.dao.LibRoleMenusDao">
+   <insert id="insertObject">
+		insert into lib_role_menus (roleId,menuId) values
+		<foreach collection="menuIds" item="menuId" separator=",">
+			(#{roleId},#{menuId})
+		</foreach>
+	</insert>
+	
+	<delete id="deleteObjectByRoleId">
+		delete from lib_role_menus
+		where roleId = #{id}
+	</delete>
+  
+  <select id="findMenuIdByRoleIds" resultType="int">
+  		select menuId
+  		from lib_role_menus
+  		where roleId in 
+  		<foreach collection="ids"
+  				 open="("
+  				 close=")"
+  				 separator=","
+  				 item="id">
+  			#{id}
+  		</foreach>
+  </select>
+</mapper>
+
+
+

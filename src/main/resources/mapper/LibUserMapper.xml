@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.lycwood.dao.LibUserDao">
+    
+ 	<delete id="deleteObjectByUserId">
+		delete from lib_users
+		where id=#{id}
+	</delete>
+   <select id="findObject" 
+   		resultType="xyz.lycwood.entity.LibUser">
+   		   select *
+           from lib_users
+           <include refid="queryWhereId"/>  
+          <!--  order by createdTime desc -->
+           <!-- limit #{startIndex},#{pageSize}  --> 
+   </select>
+   <select id="getRowCount"
+           resultType="int">
+           select count(*)
+           from lib_users
+           <include refid="queryWhereId"/>        
+   </select>
+   
+   <sql id="queryWhereId">
+       <where>
+         <if test="username!=null and username!=''">
+            username like concat("%",#{username},"%")
+         </if>
+       </where>
+   </sql>
+	
+   <!-- 禁用启用用户对象 -->
+  <update id="validById">
+        update lib_users
+        set valid=#{valid}
+        where id=#{id}  
+   </update>
+   
+   <update id="updateById">
+        update lib_users 
+        set bookNum=#{bookNum},borNum=#{borNum} 
+        where id=#{id}  
+   </update>
+   
+   <select id="findObjectById" resultType="xyz.lycwood.entity.LibUser">
+	 select * 
+	 from lib_users
+	 where id=#{id}
+   </select>
+   <!-- 注册会员时,添加会员信息 -->
+   <insert id="insertObject"
+           parameterType="xyz.lycwood.entity.LibUser"
+           useGeneratedKeys="true"
+           keyProperty="id">
+    insert into lib_users
+    (userNum,username,password,salt,gender,phone,cardId,
+    vip,hobby,valid,createdTime,lastTime,bookNum,overNum,borNum)
+    values
+    (#{userNum},#{username},#{password},#{salt},#{gender},#{phone},#{cardId},
+    #{vip},#{hobby},#{valid},#{createdTime},#{lastTime},#{bookNum},#{overNum},#{borNum}) 
+   </insert>
+   
+   <select id="findUserByUsername" resultType="xyz.lycwood.entity.LibUser">
+		select * from lib_users where username = #{username}
+	</select>
+	
+	<update id="updateUserMessById">
+		update lib_users
+		set username = #{username},
+		    phone = #{phone},
+		    hobby = #{hobby}
+		where id = #{id}
+	</update>
+	<select id="findObjects" resultType="int">
+		select count(*) 
+		from lib_users
+   </select>
+   <select id="findObjectCountByUsername" resultType="int">
+		select count(*) 
+		from lib_users
+		where username=#{username}
+   </select>
+   
+</mapper>
+
+
+

@@ -1,0 +1,44 @@
+<div class="indexback"></div>
+<div class="indexweizhi">
+	<div class="indexlogo1">
+		<img src="index/image/logo2.png" alt="" width="614" height="200" />
+	</div>
+
+	<div class="indexsearch indexbar1">
+		<form class="indexform" action="#">
+			<select class="indexselect">
+				<option value="S">书名</option>
+				<option value="Z">作者</option>
+
+			</select> 
+			<input class="indexinput" type="text" placeholder="请输入您要搜索的内容...">
+			<button class="indexbutton" type="button" value="搜索"></button>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+	
+	 $(function(){
+		$(".indexbutton").click(function(){
+    		//load函数为一个特殊的ajax函数
+    		
+    		var category=$(".indexselect").val();
+    		var name=$(".indexinput").val();
+    		if(!name){
+    			alert("查询内容不能为空!");
+				return;    			
+    		}
+    		var params={
+    				"category":category,
+    				"name":name
+    		};
+    		
+    		//console.log("params",params);
+    		$("#mainContentId").data("params",params);
+    		var url="search/doSearchList.do";
+    		$("#mainContentId").load(url);
+		});
+	}); 
+
+</script>

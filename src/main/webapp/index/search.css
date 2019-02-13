@@ -1,0 +1,132 @@
+@charset "utf-8";
+*{margin:0; padding:0; box-sizing: border-box;}
+.searchback{
+	background-image:url(image/back4.png);
+	height:0px;
+	padding-top:50%;
+	width:100%;
+	background-size:100% auto;
+	background-repeat:no-repeat;
+	background-position:bottom;
+}
+
+
+.searchback1{
+	width:100%;
+	height:60px;
+	background-color:rgba(100,100,100,0.8);
+	position:absolute;
+	top:0;
+	
+}
+.searchback2{
+	margin:0 150px;
+}
+.searchico1{
+	margin-top:10px;
+}
+.searchico2{
+	width:80px;
+	height:40px;
+	background-color:rgba(150,150,150,0.9);
+	border-radius:8px;
+	position:absolute;
+	top:10px;
+	font-size:18px;
+	font-weight:bold;
+	color:#CCC;
+	text-align:center;
+	line-height:40px;
+}
+.searchico1 a:hover{
+	text-shadow:4px 4px 4px #333333;
+}
+
+.searchul2{
+	float:left;
+	margin-top:-500px;
+}
+
+.searchpst1{
+	float:left;
+	margin-top:-15%;
+	height:200px;
+	width:20%;
+}
+
+.searchpst1>ul>li{
+	background-color:#ccc;
+	height:60px;
+	width:200px;
+	font-size:30px;
+	text-align:center;
+	font-weight:900;
+	list-style-type:none;
+}
+
+.searchul2 ul li{
+	background-color:#999;
+	height:60px;
+	width:200px;
+	margin-top:3px;
+	font-size:30px;
+	color:#FFF;
+	text-align:center;
+	
+}
+.sbutton1{
+	text-decoration:none;
+}
+.searchpst1 a{
+	text-decoration:none;
+}
+.searchinput{
+	float:left;
+	margin-top:-45%;
+	margin-left:35%;
+	width:400px;
+	height:50px;
+	font:bold 20px sans-serif;
+	color:#333;
+	border-width:4px;
+}
+.searchbutton{
+	height:50px;
+	width:80px;
+	float:left;
+	margin-top:-45%;
+	margin-left:55%;
+	font:bold 20px sans-serif;
+	color:#333;
+	border-width:4px;
+}
+.searchusermess{
+	height:50px;
+	width:150px;
+	float:left;
+	margin-top:-45%;
+	margin-left:50%;
+	font:bold 20px sans-serif;
+	color:#333;
+	border-width:4px;
+}
+.searchselect{
+	height:50px;
+	width:80px;
+	float:left;
+	margin-top:-45%;
+	margin-left:31%;
+	font:bold 20px sans-serif;
+	color:#333;
+	border-width:4px;
+}
+
+.searchback3{
+	float:left;
+	margin-top:-40%;
+	margin-left:20%;
+	height:500px;
+	width:70%;
+	background-color:#CCC;
+}
+	

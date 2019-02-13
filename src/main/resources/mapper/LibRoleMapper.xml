@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.lycwood.dao.LibRoleDao">
+   <select id="findPageObjects" resultType="xyz.lycwood.entity.LibRole">
+			select * from lib_roles 
+			<where>
+				<if test="name!=null and name!=''">
+					name like concat("%",#{name},"%")
+				</if>
+			</where> 
+			 	<!-- limit #{startIndex} , #{pageSize} -->
+	</select>
+	
+	<select id="getRowCount" resultType="int">
+		select count(*) from lib_roles where name = #{name} 
+	</select>
+	
+	<insert id="insertObject" useGeneratedKeys="true" keyProperty="id">
+		 insert into lib_roles 
+         (id,name,note,createdTime,modifiedTime,
+         createdUser,modifiedUser) 
+         values
+         (null,#{name},#{note},now(),now(),
+         #{createdUser},#{modifiedUser})
+	</insert>
+	
+	<delete id="deleteObject">
+		delete from lib_roles where id = #{id};
+	</delete>
+	
+	<select id="findObjectById" resultMap="sysRoleVo">
+		select id,name,note from lib_roles where id = #{id}
+	</select>
+	
+	<resultMap type="xyz.lycwood.vo.RoleVo" id="sysRoleVo">
+		<id column="id" property="id"></id>
+		<collection property="menuIds" column="id" select="xyz.lycwood.dao.LibRoleDao.findMenuIdsByRoleId"></collection>
+	</resultMap>
+	
+	<select id="findMenuIdsByRoleId" resultType="int"> 
+		select menuId from lib_role_menus where roleId = #{id}
+	</select>
+	
+	<update id="updateObject">
+		update lib_roles set name = #{name},note =#{note} ,modifiedUser=#{modifiedUser},
+			 modifiedTime=now()  where id=#{id}
+	</update>
+  
+  <select id="findObjects" resultType="xyz.lycwood.common.vo.CheckBox">
+   		select id,name
+   		from lib_roles
+   </select>
+</mapper>
+
+
+

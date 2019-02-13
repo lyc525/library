@@ -1,0 +1,63 @@
+<div class="loginback"></div>
+<div class="loginback3">
+	<div class="loginlogo1">
+		<img src="index/image/logo2.png" alt="" width="450" title="书籍是人类进步的阶梯" />
+	</div>
+	<hr style="margin-top: 140px" width="100%" />
+	<div>
+			<input class="logininput" type="text" name="name" id="usernameId" placeholder="你的姓名OR昵称" />
+			<br/> 
+			<input class="logininput" type="password" name="mima" id="passwordId" placeholder="你的账号密码" /><br />
+			<button class="loginbutton" type="submit" id="loginId" >登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录</button>
+		<div
+			style="margin-left: 420px; margin-top: 10px; font: bold 18px sans-serif;">
+			<a style="text-decoration: none; color: #FFF" href="#" class="logintoreg">立即注册！</a>
+		</div>
+		<!-- <div
+			style="margin-left: 420px; margin-top: 10px; font: bold 18px sans-serif;">
+			<a style="text-decoration: none; color: #FFF" " href="#">忘记密码？</a>
+		</div> -->
+	</div>
+</div>
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script>
+    
+    $(function(){
+    	$("#loginId").click(doLogin);
+    	$(".logintoreg").on("click",logintoreg);
+    });
+    
+ function logintoreg(){
+	 //console.log("跳转");
+	 $("#mainContentId").load("index/doRegisterList.do");
+ }
+    
+  function doLogin(){
+	  var params={
+		 username:$("#usernameId").val(),
+		 password:$("#passwordId").val()
+	  }
+	  var url="user/doLogin.do";
+	  //console.log("params",params);
+	  $.post(url,params,function(result){
+		  if(result.state==1){
+			//跳转到indexUI对应的页面
+			//console.log("参数:",params.username);
+			
+			var username={
+					"name":params.username};
+			
+			$("#mainContentId").prop("username",username);
+			//var username = $("#mainContentId").prop("username1");
+			//console.log("登录页面取出",username);
+			alert("登录成功!");
+			$("#mainContentId").load("index/doSearchList.do");
+			//location.href="index/doSearchList.do?t="+Math.random();
+		    }else{
+		    	alert("用户名或密码不正确!");
+				$(".ico1").html(result.message); 
+		    } 
+		  return false;
+	  });
+  }
+</script>

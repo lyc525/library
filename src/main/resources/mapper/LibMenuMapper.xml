@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.lycwood.dao.LibMenuDao">
+	<select id="findObjects" resultType="xyz.lycwood.entity.LibMenu">
+		select c.*,
+		(select p.name from lib_menus p where c.parentId=p.id) parentName
+		from lib_menus c;
+	</select>
+	<!-- 根据id删除菜单 -->
+	<delete id="deleteObject">
+		delete from lib_menus
+		where id=#{id}
+	</delete>
+	<!-- 根据菜单id删除菜单信息 -->
+	<delete id="deleteObjectsByMenuId">
+		delete from lib_role_menus
+		where menuId=#{id}
+	</delete>
+	<!-- 根据id统计子菜单 -->
+	<select id="getChildCount" resultType="int">
+		select count(*) from lib_menus where parentId=#{id}
+	</select>
+	
+	<select id="findZtreeNodes" resultType="xyz.lycwood.common.vo.Node">
+		select id,name,parentId from lib_menus;
+	</select>
+	
+	<insert id="insertObject">
+		insert into lib_menus (name,url,type,sort,parentId,permission,createdTime,modifiedTime,createdUser,modifiedUser)
+		values(#{name},#{url},#{type},#{sort},#{parentId},#{permission},now(),now(),#{createdUser},#{modifiedUser});
+	</insert>
+	<update id="updateObject">
+		update lib_menus set
+		name=#{name},
+		type=#{type},
+		parentId=#{parentId},
+		url=#{url},
+		permission=#{permission},
+		sort=#{sort},
+		 modifiedUser=#{modifiedUser},
+           modifiedTime=now()
+		where id=#{id}
+	</update>
+	
+	<select id="findPermissions" resultType="String">
+		select permission 
+		from lib_menus
+		where id in 
+		<foreach collection="menuIds"
+		         open="("
+		         close=")"
+		         separator=","
+		         item="menuId">
+		    #{menuId}        
+		 </foreach>
+	</select>
+</mapper>
+
+
+

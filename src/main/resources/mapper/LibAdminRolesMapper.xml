@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.lycwood.dao.LibAdminRolesDao">
+
+	<insert id="insertObject">
+		insert into lib_admin_roles
+		(adminId,roleId)
+		values
+		<foreach collection="roleIds"
+		         separator=","
+		         item="roleId">
+		(#{adminId},#{roleId})
+		</foreach>
+	</insert>
+  
+  <select id="findObjectById" resultType="int">
+  		select roleId
+  		from lib_admin_roles
+  		where adminId = #{id}
+  </select>
+  
+  <delete id="deleteObject">
+  		delete
+  		from lib_admin_roles
+  		where adminId = #{id}
+  </delete>
+</mapper>
+
+
+

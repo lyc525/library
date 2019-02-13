@@ -1,0 +1,242 @@
+<!-- Horizontal Form -->
+ <div class="box box-info">
+      <div class="box-header with-border">
+        <h3 class="box-title">添加图书</h3>
+      </div>
+      <!-- /.box-header -->
+      <!-- form start -->
+      <form class="form-horizontal">
+        <!-- <div class="box-body">
+          <div class="form-group">
+            <label for="bookId" class="col-sm-2 control-label">书号</label>
+              <div class="col-sm-10">
+              <input type="text" class="form-control"  id="bookId">
+            </div>
+          </div> -->
+          <div class="form-group">
+            <label for="locationId" class="col-sm-2 control-label">图书区域</label>
+              <div class="col-sm-10">
+              <input type="text" class="form-control"  id="locationId">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="nameId" class="col-sm-2 control-label">书名</label>
+              <div class="col-sm-10">
+              <input type="text" class="form-control"  id="nameId">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="authorId" class="col-sm-2 control-label">作者</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control"  id="authorId">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="categoryId" class="col-sm-2 control-label">类别</label>
+              <div class="col-sm-10">
+              <input type="text" class="form-control"  id="categoryId">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="pressId" class="col-sm-2 control-label">出版社</label>
+              <div class="col-sm-10">
+              <input type="text" class="form-control"  id="pressId">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="summaryId" class="col-sm-2 control-label">书籍说明</label>
+              <div class="col-sm-10">
+              <input type="text" class="form-control"  id="summaryId">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="totalNumId" class="col-sm-2 control-label">总数量</label>
+              <div class="col-sm-10">
+              <input type="text" class="form-control"  id="totalNumId">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="oddNumId" class="col-sm-2 control-label">剩余数量</label>
+              <div class="col-sm-10">
+              <input type="text" class="form-control"  id="oddNumId">
+            </div>
+          </div>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+          <button type="button" class="btn btn-default btn-cancel">Cancel</button>
+          <button type="button" class="btn btn-info pull-right btn-save">Save</button>
+        </div>
+        <!-- /.box-footer -->
+      </form>
+     <div class="layui-layer layui-layer-page layui-layer-molv layer-anim" id="treeLayer" type="page" times="2" showtime="0" contype="object"
+		style="z-index:59891016; width: 300px; height: 450px; top: 100px; left: 500px; display:none">
+		<div class="layui-layer-title" style="cursor: move;">选择部门</div>
+		<div class="layui-layer-content" style="height: 358px;">
+			<div style="padding: 10px;" class="layui-layer-wrap">
+				<ul id="zTreeId" class="ztree"></ul>    <!-- 动态加载树 -->
+			</div>
+		</div>
+		<span class="layui-layer-setwin"> <a class="layui-layer-ico layui-layer-close layui-layer-close1 btn-cancel" ></a></span>
+		<div class="layui-layer-btn layui-layer-btn-">
+			<a class="layui-layer-btn0 btn-confirm">确定</a>
+			<a class="layui-layer-btn1 btn-cancel">取消</a>
+	     </div>
+      </div>
+    </div>
+<script type="text/javascript" src="bower_components/ztree/jquery.ztree.all.min.js"></script>
+<script type="text/javascript" src="bower_components/layer/layer.js"></script>
+<script type="text/javascript">
+ var zTree; 
+ //初始化zTree时会用到
+ var setting = {
+	data : {
+		simpleData : {
+			enable : true,
+			idKey : "id",  //节点数据中保存唯一标识的属性名称
+			pIdKey : "parentId",  //节点数据中保存其父节点唯一标识的属性名称
+			rootPId : null  //根节点id
+		}//json 格式javascript对象
+	}
+ }//json 格式的javascript对象
+ $(document).ready(function(){
+	 //页面加载完成以后加载角色信息并初始化页面
+	  doLoadRoles();
+	 //事件注册
+	 $(".box-footer")
+	 .on("click",".btn-cancel",doCancel)
+	 .on("click",".btn-save",doSaveOrUpdate);
+	 
+	  $("#treeLayer")
+	  .on("click",".btn-cancel",doHideTree)
+	  .on("click",".btn-confirm",doConfirm);
+	 
+	 $(".form-horizontal")
+	 .on("click",".load-sys-dept",doLoadZTreeNodes);
+ });
+ 
+ function doHideTree(){
+	  $("#treeLayer").css("display","none");
+ }
+ //确定按钮
+ function doConfirm(){
+	  //1.获取选中的记录(id,name);
+	  var selectedNodes=zTree.getSelectedNodes();
+	  var node=selectedNodes[0];
+	  //2.将id和name填写或绑定在具体对象上
+	  $("#deptId").val(node.name);
+	  console.log("node.id="+node.id)
+	  $("#deptId").data("deptId",node.id)
+	  //3.隐藏zTree对应的Div
+	  doHideTree();
+ }
+ 
+ function doLoadZTreeNodes(){
+	  var url="dept/doFindZTreeNodes.do";
+	  $("#treeLayer").css("display","block");
+	  $.getJSON(url,function(result){
+		  if(result.state==1){
+			  zTree = $.fn.zTree.init($("#zTreeId"),setting,result.data);
+		  }else{
+			  alert(result.message);
+		  }
+	  });
+ }
+ function doCancel(){
+	$("#mainContentId").removeData("rowData");
+	$("#mainContentId").load("book/doBookListUI.do");
+ }
+ function doSaveOrUpdate(){
+	 var rowData=$("#mainContentId").data("rowData");
+	 //console.log("rowData",rowData);
+	 //1.获取表单数据
+	 var params=doGetEditFormData();
+	 if(rowData)params.id=rowData.id;
+	 //2.发起异步请求
+	 var insertUrl="book/doSaveObject.do";
+	 var updateUrl="book/doUpdateObject.do";
+	 var url=rowData?updateUrl:insertUrl;
+	 console.log("params",params);
+	 $.post(url,params,function(result){
+		 
+		 if(result.state==1){
+			 alert(result.message);
+			 doCancel();
+		 }else{
+			alert(result.message);
+		 }
+	 })
+ }
+ function doGetEditFormData(){
+	 //获取用户输入的数据
+	 var params={
+	    location:$("#locationId").val(),
+	    name:$("#nameId").val(),
+	    author:$("#authorId").val(),
+	    category:$("#categoryId").val(),
+	    press:$("#pressId").val(),
+	    summary:$("#summaryId").val(),
+	    totalNum:$("#totalNumId").val(),
+	    oddNum:$("#oddNumId").val()
+	 }
+	 //获取选择的角色
+	 var roleIds=new Array();
+	 $("#rolesId input[name='roleId']")
+	 .each(function(){
+		 if($(this).prop("checked")){
+			roleIds.push($(this).val());
+		 }
+	 });
+	 params.roleIds=roleIds.toString();
+	 return params;
+ }
+ function doLoadRoles(){
+	 var url="role/doFindRoles.do"
+	 $.getJSON(url,function(result){
+		 if(result.state==1){
+		  doInitPageRoles(result.data);
+		  doInitFormData();//修改时
+		 }else{
+		  alert(result.message);
+		 }
+	 })
+ }
+ function doInitFormData(){
+     var data=$("#mainContentId").data("rowData");
+     if(!data)return;
+	 //console.log(data);
+	 //初始化用户信息 
+	 $("#locationId").val(data.location);
+	 $("#nameId").val(data.name);
+	// console.log("data.user.sysDept.idss="+data.user.sysDept.id);
+	 $("#authorId").val(data.author);
+	 $("#categoryId").val(data.category);
+	 $("#pressId").val(data.press);
+	 $("#summaryId").val(data.summary);
+	 $("#totalNumId").val(data.totalNum);
+	 $("#oddNumId").val(data.oddNum);
+ }
+function doInitPageRoles(data){
+	 //1.获取角色要显示的位置对象
+	 var div=$("#rolesId");
+	 div.empty();
+	 //2.迭代数据，将数据追加到div
+	 var input="<input type='checkbox' name='roleId' value='[id]'>[name]"
+	 for(var i in data){
+		 //记住每次replace时都会产生一个新的字符串对象
+		 var newInput=
+		 input.replace("[id]",data[i].id)
+		 .replace("[name]",data[i].name);
+		 div.append(newInput)
+	 }
+ }
+</script>
+    
+    
+    
+    
+    
+    
+    

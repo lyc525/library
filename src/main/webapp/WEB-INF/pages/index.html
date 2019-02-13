@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>观砚图书馆</title>
+<link href="index/index.css" rel="stylesheet" type="text/css" />
+<link href="index/login.css" rel="stylesheet" type="text/css" />
+<link href="index/register.css" rel="stylesheet" type="text/css" />
+<link href="index/search.css" rel="stylesheet" type="text/css" />
+
+<link href="index/search.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet"
+	href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+<!-- Font Awesome -->
+<link rel="stylesheet"
+	href="bower_components/font-awesome/css/font-awesome.min.css" />
+<!-- Ionicons -->
+<link rel="stylesheet"
+	href="bower_components/Ionicons/css/ionicons.min.css" />
+<!-- Theme style -->
+<link rel="stylesheet" href="dist/css/AdminLTE.min.css" />
+<!-- AdminLTE Skins. We have chosen the skin-blue for this starter
+        page. However, you can choose any other skin. Make sure you
+        apply the skin class to the body tag so the changes take effect. -->
+<link rel="stylesheet" href="dist/css/skins/skin-blue.min.css" />
+<link rel="stylesheet"
+	href="bower_components/layer/skin/default/layer.css" />
+<link rel="stylesheet"
+	href="bower_components/ztree/css/metroStyle/metroStyle.css" />
+<link rel="stylesheet"
+	href="bower_components/treegrid/jquery.treegrid.css" />
+</head>
+<body>
+	<div class="indexback1">
+		<div class="indexback2">
+			<div class="indexico1">
+				<a href="#"><img src="index/image/logo.png" width="70" alt="" /></a>
+				<a href="#"><div class="indexico2" id="userloginId" style="left: 275px;">会员登录</div></a>
+				<a href="#"><div class="indexico2" id="regiId" style="left: 375px;">会员注册</div></a>
+				<a href="doLoginUI.do"><div class="indexico2" id="adminLoginId" style="left: 480px;">管理员登录</div></a>
+				<a href="#"><div class="indexico2" id="usermess" style="left: 275px;">个人信息</div></a>
+				<a href="#"><div class="indexico2" id="bookSearch" style="left: 375px;">书籍搜索</div></a>
+			</div>
+
+			<div>
+				<ul class="indexul1">
+					<a href="doIndex.do" class="logoutin"><li>退出登录</li></a>
+					<a href="doWe.do"><li>关于我们</li></a>
+					<a href="doIndex.do" class="indexone"><li>首页</li></a>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+		<section id="mainContentId" class="content container-fluid">
+		</section>
+	
+	<script src="bower_components/jquery/dist/jquery.min.js" />
+
+
+	<!-- Bootstrap 3.3.7 -->
+	<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<!-- AdminLTE App -->
+	<script src="dist/js/adminlte.min.js"></script>
+	<script type="text/javascript">
+		//说明，在此位置添加js，使用load函数加载页面
+		$(function() {
+			//console.log("add");
+		//$(".indexone").on()
+			$("#mainContentId").load("index/doIndexList.do");
+			$("#userloginId").on("click",doUserLogin);
+			$("#regiId").on("click",doUserRegi);
+			$("#usermess").css("display","none");
+			$(".indexul1").on("click",".logoutin",doLogoutin);
+			$("#bookSearch").css("display","none");
+		});
+		
+		function doLogoutin(){
+			$("#mainContentId").removeData("username");
+		}
+		
+		function doUserLogin(){
+			$("#mainContentId").load("index/doLoginList.do");
+		}
+		function doUserRegi(){
+			$("#mainContentId").load("index/doRegisterList.do");
+		}
+		var username = $("#mainContentId").prop("username");
+		//console.log("隐藏",username);
+		if(!username){
+			$(".logoutin").css("display", "none");
+		}
+		
+		
+	</script>
+
+</body>
+
+</html>

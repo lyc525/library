@@ -1,0 +1,124 @@
+@charset "utf-8";
+*{margin:0; padding:0; box-sizing: border-box;}
+.registerback{
+	background-image:url(image/back3.jpg);
+	height:0px;
+	padding-top:50%;
+	width:100%;
+	background-size:100% auto;
+}
+.registerul1 a:hover{
+	background-color:#333;
+}
+.registerform label{
+	font-size:24px;
+	vertical-align:5%;
+	font-weight:bold;
+	color:#FFF;
+}
+.registerback1{
+	width:100%;
+	height:60px;
+	background-color:rgba(100,100,100,0.8);
+	position:absolute;
+	top:0;
+	
+}
+.registerback2{
+	margin:0 150px;
+}
+.registerico1{
+	margin-top:10px;
+}
+.registerico2{
+	width:80px;
+	height:40px;
+	background-color:rgba(150,150,150,0.9);
+	border-radius:8px;
+	position:absolute;
+	top:10px;
+	font-size:18px;
+	font-weight:bold;
+	color:#CCC;
+	text-align:center;
+	line-height:40px;
+}
+.registerico1 a:hover{
+	text-shadow:4px 4px 4px #333333;
+}
+.registerul1 li{
+	text-decoration:none;
+	padding:15px 30px;
+	float:right;
+	list-style-type:none;
+	font-weight:bold;
+	
+}
+.registerul1{
+	margin-top:-50px;
+}
+.registerul1 a:link{
+	color:#FFF;
+}
+.registerul1 a:visited{
+	color:#333;
+}
+.registerul1 a:hover{
+	color:#CCC ;
+	
+}
+.registerul2{
+	float:left;
+	margin-top:-500px;
+}
+.registerback3{
+	height:450px;
+	width:60%;
+	background-color:rgba(100,100,100,0.7);
+	float:left;
+	margin:-35% 20%;
+}
+.registerlogo1{
+	float:left;
+	margin:10px 25% 5px;
+}
+.registerback4{
+	width:80%;
+	margin:0 auto;
+}
+.registerform{
+	margin-top:30px;
+	
+}
+.registerfor1{
+	float:left;
+}
+.registerfor2{
+	float:right;
+}
+.registerfor2 input{
+	
+}
+.registerinput{
+	width:285px;
+	height:40px;
+	font-size:14px;
+	border-radius:10px;
+	margin-top:10px;
+	background-color:rgba(200,200,200,0.8);
+	color:#FFF;
+	font-weight:900;
+}
+.registerbutton{
+	width:300px;
+	height:40px;
+	border-radius:10px;
+	background-color:#069;
+	border-color:#069;
+	color:#FFF;
+	text-align:center;
+	font-weight:900;
+	font-size:24px;
+	float:right;
+	margin:30px 33.3%;
+}

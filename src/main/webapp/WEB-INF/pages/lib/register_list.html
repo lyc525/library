@@ -1,0 +1,187 @@
+   <div class="registerback"></div>
+    <div class="registerback3">
+    	<div class="registerlogo1">
+    	<img src="index/image/logo2.png" alt="" width="450" />
+    	</div> 
+        <hr style="margin-top:140px" width="100%" />
+        
+        <div class="registerback4">
+        	<form class="registerfor1 registerform for1">
+            	<input class="registerinput for101" type="text" name="name" placeholder="用户(最多16位字母开头的数字、字母组合)"/><br />
+            	<font style="display:none" class="p1" size="3" color="red"></font>
+            	<input class="registerinput" type="password" name="mima" placeholder="密码(8~16位数字、大小写字母组合)" /><br />
+                <input class="registerinput for103" type="password" name="yan" placeholder="密码(8~16位数字、大小写字母组合)" />
+            	<font style="display:none" class="p2" size="3" color="red"></font>
+                
+            </form>
+            <form class="registerfor2 registerform for2">
+
+				<input class="registerinput" type="radio" name="sex" id="i1" style="width:20px; height:20px" checked="checked" value="男"/><label for="i1">男</label>
+				<input class="registerinput" type="radio" name="sex" id="i2" style="width:20px; height:20px" value="女"/><label for="i2">女</label><br /><br />
+
+				<input class="registerinput"type="checkbox" name="aihao" id="c1" style="width:20px; height:20px" value="文学类"/><label for="c1">文学类</label>
+                <input class="registerinput"type="checkbox" name="aihao" id="c2" style="width:20px; height:20px" value="小说类"/><label for="c2">小说类</label>
+                <input class="registerinput"type="checkbox" name="aihao" id="c3" style="width:20px; height:20px" value="科技类"/><label for="c3">科技类</label>
+                <input class="registerinput"type="checkbox" name="aihao" id="c4" style="width:20px; height:20px" value="少儿类"/><label for="c4">少儿类</label>
+                <input class="registerinput"type="checkbox" name="aihao" id="c5" style="width:20px; height:20px" value="杂志类"/><label for="c5">杂志类</label>
+                <input class="registerinput"type="checkbox" name="aihao" id="c6" style="width:20px; height:20px" value="历史类"/><label for="c6">历史类</label>
+            	<br />
+                <input class="registerinput for201" type="text" name="tel" placeholder="请输入你的手机号码" style="margin:4% 0"/>
+                <font style="display:none" class="p3" size="3" color="red"></font>
+                <input class="registerinput for202" type="text" name="idCard" placeholder="请输入你的身份证号" style="margin:4% 0"/>
+                <font style="display:none" class="p4" size="3" color="red"></font>
+            </form>   
+        <button class="registerbutton" type="submit">注&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;册</button>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+	$(function(){
+		$(".registerback4")
+		.on("blur",".for101",docheckUsername)
+		.on("blur",".for103",checkPassword)
+		.on("click",".registerbutton",dozhuce)
+		.on("blur",".for201",checkTel)
+		.on("blur",".for202",checkCardId);
+	});
+	
+	function dozhuce(){
+		//debugger;
+		var username = $(".for1 input").eq(0).val().trim();
+		var pword1 = $(".for1 input").eq(1).val();
+		var pword2 = $(".for1 input").eq(2).val();
+		var gender=$(".for2 input[name='sex']:checked").val();
+		var check_val=[];
+		check_val=doGetCheckedVal();
+		var tel = $(".for2 input").eq(8).val();
+		var cardId = $(".for2 input").eq(9).val();
+		
+		var params = {"username":username,
+					"password":pword1,
+					"gender":gender,
+					"check_val":check_val.toString(),
+					"tel":tel,
+					"cardId":cardId}
+		//console.log(params);
+		var url = "user/doInsertObject.do";
+		$.post(url,params,function(result){
+			 //console.log("result.state==",result.state);
+			if(result.state==1){
+				alert(result.message);
+				doLoadMemberUI();
+			}else{
+				alert(result.message);
+			}
+		});
+	} 
+	//加载会员个人信息页面
+	function doLoadMemberUI(){
+		$("#mainContentId").load("index/doIndexList.do");
+	}
+	
+	function doGetCheckedVal(){
+		    var obj = $(".for2 input[type='checkbox']:checked");
+		    if(obj.length==0){
+		    	alert("请选择爱好类别");
+		    	return;
+		    }
+		    check_val = [];
+		    for(k in obj){
+		        if(obj[k].checked && obj[k].value != "0")
+		            check_val.push(obj[k].value);
+		    }
+		return check_val;
+	} 
+
+	function checkPassword(){
+		//debugger;
+		var pword1 = $(".for1 input").eq(1).val();
+		var pword2 = $(".for1 input").eq(2).val();
+		//console.log("pword1==",pword1);
+		if(pword1==null||pword1==""){
+			$(".p2").css('display','block');
+			$(".p2").text("*密码不能为空");
+			return;
+		}
+		if(pword2==null||pword2==""){
+			$(".p2").css('display','block');
+			$(".p2").text("*密码不能为空");
+			return;
+		} 
+		if(pword1!=pword2){
+			$(".p2").css('display','block');
+			$(".p2").text("*两次输入的密码不一致");
+			return; 
+		}
+	    // 长度为6到18个字符
+	    var reg = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,16}$/;
+	    if(!reg.test(pword1)){
+	    	$(".p2").css('display','block');
+			$(".p2").text("*密码格式必须包含大小写字母和数字的组合，不能使用特殊字符，长度在 8-16之间");
+	        return;
+	    }
+	    $(".p2").css('display','none');
+	} 
+	function checkTel(){
+		//debugger;
+		var tel = $(".for2 input").eq(8).val();
+		//console.log("tel==",tel);
+		if(tel==null||tel==""){
+			$(".p3").css('display','block');
+			$(".p3").text("*请输入手机号");
+			return;
+		} 
+	    var reg = /^(13[0-9]\d{8})|(14[57]\d{8})|(15[0-35-9]\d{8})|(17[36-8]\d{8})|(18[0-9]\d{8})|(170[057-9]\d{7})$/;
+	    if(!reg.test(tel)){
+	    	$(".p3").css('display','block');
+			$(".p3").text("*手机号格式有误");
+	        return;
+	    }
+	    $(".p3").css('display','none');
+	} 
+	function checkCardId(){
+		//debugger;
+		var cardId = $(".for2 input").eq(9).val();
+		//console.log("cardId==",cardId);
+		if(cardId==null||cardId==""){
+			$(".p4").css('display','block');
+			$(".p4").text("*请输入身份证号");
+			return;
+		} 
+	    var reg = /^(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)$/;
+	    if(!reg.test(cardId)){
+	    	$(".p4").css('display','block');
+			$(".p4").text("*身份证号格式有误");
+	        return;
+	    }
+	    $(".p4").css('display','none');
+	}
+
+	function docheckUsername(){
+		//debugger;
+		var username = $(".for101").val().trim();
+		if(username==null||username==""){
+			$(".p1").css('display','block');
+			$(".p1").text("*用户名不能为空");
+			return;
+		} 
+		var reg = /^[a-zA-Z][a-zA-Z0-9]{0,16}$/;
+	    if(!reg.test(username)){
+	    	$(".p1").css('display','block');
+			$(".p1").text("*用户名格式错误,最多16位字母开头的数组字母组合");
+	        return;
+	    }
+		var params = {"username":username}
+		var url = "user/doCheckUsername.do";
+		$.getJSON(url,params,function(result){
+			 if(result.state==1){
+			 }else{
+			    alert(result.message);
+			    return;
+			 }
+		 }); 
+		$(".p1").css('display','none');
+	}
+
+</script>
+

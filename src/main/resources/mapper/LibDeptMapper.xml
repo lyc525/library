@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.lycwood.dao.LibDeptDao">
+   
+   <select id="findObjects" resultType="map">
+   		select c.*,(select p.name
+   		            from lib_depts p
+   		            where c.parentId = p.id) parentName
+   		from lib_depts c
+   </select>
+   <select id="selectChildDeptByDeptId" resultType="int">
+   		select count(*)
+   		from lib_depts c
+   		where c.parentId = #{id}
+   </select>
+   
+   <delete id="deleteObjects">
+   		delete
+   		from lib_depts
+   		where id = #{id}
+   </delete>
+   
+   <select id="findZTreeDeptNodes" resultType="xyz.lycwood.common.vo.Node">
+   		select id,name,parentId
+   		from lib_depts
+   </select>
+   
+   <insert id="insertObjects" parameterType="xyz.lycwood.entity.LibDept">
+   		insert
+   		into lib_depts
+   		(id,name,note,parentId,sort,createdTime,createdUser,modifiedTime,modifiedUser)
+   		values
+   		(null,#{name},#{note},#{parentId},#{sort},now(),#{createdUser},now(),#{modifiedUser})
+   </insert>
+   
+   <update id="updateObects" parameterType="xyz.lycwood.entity.LibDept">
+   		update lib_depts
+   		set name = #{name},
+   		    parentId = #{parentId},
+   		    note = #{note},
+   		    sort = #{sort},
+   		    modifiedTime = now(),
+   		    modifiedUser = #{modifiedUser}
+   		 where id = #{id}
+   </update>
+   
+   <select id="findDeptNameByDeptId" resultType="xyz.lycwood.entity.LibDept">
+   		select *
+   		from lib_depts
+   		where id = #{id}
+   </select>
+</mapper>
+
+
+

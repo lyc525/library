@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.lycwood.dao.LibAdminDao">
+   <select id="selectUserByDeptId" resultType="int">
+   		select count(*)
+   		from lib_admins
+   		where deptId = #{id}
+   </select>
+   
+   <sql id="selectByName">
+   		<where>
+   			<if test="adminname != null and adminname != ''">
+   				adminname like concat("%",#{adminname},"%")
+   			</if>
+   		</where>
+   </sql>
+   <select id="findpageObjects" resultMap="libDeptName">
+   		select * 
+   		from lib_admins
+   		<include refid="selectByName"/>
+   		<!-- limit #{startIndex},#{pageSize} -->
+   </select>
+   
+   <resultMap type="xyz.lycwood.vo.AdminVo" id="libDeptName">
+   		<association property="libDept"
+   		             column="deptId"
+   		             select="xyz.lycwood.dao.LibDeptDao.findDeptNameByDeptId"></association>
+   </resultMap>
+   
+   <select id="getRowCount" resultType="int">
+   		select count(*)
+   		from lib_admins
+   		<include refid="selectByName"/>
+   </select>
+   
+   <insert id="insertObject" 
+   		   parameterType="xyz.lycwood.entity.LibAdmin" 
+   		   useGeneratedKeys="true" 
+   		   keyProperty="id">
+   		insert into lib_admins
+   		(adminname,password,salt,gender,phone,email,deptId,createdTime,createdUser,modifiedTime,modifiedUser)
+   		values
+   		(#{adminname},#{password},#{salt},#{gender},#{phone},#{email},#{deptId},now(),#{createdUser},now(),#{modifiedUser})
+   </insert>
+   
+   <select id="findObjectById" resultMap="libDeptName">
+   		select * 
+   		from lib_admins
+        where id = #{id}
+   </select>
+   
+   <update id="updateObject">
+   		update lib_admins
+   		set adminname = #{adminname},
+   		    deptId = #{deptId},
+   		    phone = #{phone},
+   		    modifiedTime = now(),
+   		    modifiedUser = #{modifiedUser}
+   		 where id = #{id}
+   </update>
+   
+   <delete id="deleteObject">
+   		delete 
+   		from lib_admins
+   		where id = #{id}
+   </delete>
+   
+   <select id="findObject" resultType="xyz.lycwood.entity.LibAdmin">
+   		select * 
+   		from lib_admins
+   		where adminname = #{adminname}
+   </select>
+</mapper>
+
+
+

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.lycwood.dao.LibBookDao">
+	<!-- 根据id删除 -->
+	<delete id="deleteObject">
+		delete
+		from lib_books
+		where id in
+		<foreach collection="ids" open="(" close=")" separator=","
+			item="id">
+			#{id}
+		</foreach>
+	</delete>
+	<!-- 借助此元素对共性数据进行提取 -->
+	<sql id="queryWhereId">
+		<where>
+			<if test="name!=null and name!=''">
+				name like concat("%",#{name},"%")
+			</if>
+		</where>
+	</sql>
+	<sql id="queryWhereName">
+		<where>
+			<if test="author!=null and author!=''">
+				author like concat("%",#{author},"%")
+			</if>
+		</where>
+	</sql>
+	<!-- 查询所有的书本信息 -->
+	<select id="findPageObjects" resultType="xyz.lycwood.entity.LibBook">
+		select *
+		from lib_books
+		<include refid="queryWhereId" />
+	</select>
+	<select id="getRowCount" resultType="int">
+		select count(*)
+		from lib_books
+		<include refid="queryWhereId" />
+	</select>
+
+	<select id="findBookByCategory" resultType="xyz.lycwood.entity.LibBook">
+		select *
+		from lib_books
+		where category = #{category}
+	</select>
+
+	<select id="findBookByAuthor" resultType="xyz.lycwood.entity.LibBook">
+		select *
+		from lib_books
+		<include refid="queryWhereName" />
+	</select>
+
+
+	<insert id="insertObject">
+		insert into lib_books
+		(location,name,author,category,press,summary,totalNum,oddNum,imgUrl,downUrl)
+		values
+		(#{location},#{name},#{author},#{category},#{press},#{summary},#{totalNum},#{oddNum},null,null)
+	</insert>
+
+	<select id="findBookById" resultType="xyz.lycwood.entity.LibBook">
+		select *
+		from lib_books
+		where id = #{id}
+	</select>
+
+	<update id="updateObject" parameterType="xyz.lycwood.entity.LibBook">
+		update lib_books
+		set location = #{location},
+		name = #{name},
+		author = #{author},
+		category = #{category},
+		press = #{press},
+		summary = #{summary},
+		totalNum = #{totalNum},
+		oddNum = #{oddNum}
+		where id = #{id}
+	</update>
+
+	<update id="updateValid">
+		update lib_books
+		set valid = #{valid}
+		where id = #{id}
+	</update>
+	
+	<update id="updateNumById">
+		update lib_books
+		set oddNum = #{oddNum}
+		where id = #{id}
+	</update>
+	
+	
+	
+</mapper>
+
+
+

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.lycwood.dao.Lib_logsDao">
+
+	<!-- 根据用户名查找当前用户对象 -->
+	<!-- <select id="findObjects" resultType="xyz.lycwood.entity.Lib_logs">
+		select *
+		from lib_logs
+	</select>
+ -->
+	<!-- 分页查询当前页记录 -->
+	<select id="findObjects" resultType="xyz.lycwood.entity.Lib_logs">
+		select *
+		from lib_logs
+		<include refid="queryWhereId" />
+		<!-- order by createdTime desc -->
+		<!-- limit #{startIndex},#{pageSize} -->
+	</select>
+	<sql id="queryWhereId">
+		<where>
+			<if test="username!=null and username!=''">
+				username like concat('%',#{username},'%')
+			</if>
+		</where>
+	</sql>
+
+
+
+
+	<delete id="deleteObjects">
+		delete from lib_logs
+		where id in <!-- (1,2,3,4,5) -->
+		<foreach collection="ids" open="(" close=")" separator=","
+			item="item">
+			#{item}
+		</foreach>
+	</delete>
+
+	<insert id="insertObject">
+		insert into lib_logs (username,operation,method,params,time,ip,createdTime)
+		values(#{username},#{operation},#{method},#{params},#{time},#{ip},#{createdTime})
+	</insert>
+
+</mapper>
+
+
+
